@@ -22,6 +22,7 @@ import { TextArea } from '../../components/TextArea';
 import { Button } from '../../components/Button';
 import { Guilds } from '../Guilds';
 import { GuildProps } from '../../components/Guild';
+import { Background } from '../../components/Background';
 
 export function AppointmentCreate() {
   const [category, setCategory] = useState('');
@@ -32,9 +33,17 @@ export function AppointmentCreate() {
     setOpenGuildsModal(true);
   }
 
+  function handleCloseGuilds() {
+    setOpenGuildsModal(false);
+  }
+
   function handleGuildSelect(guildSelect: GuildProps) {
     setGuild(guildSelect);
     setOpenGuildsModal(false);
+  }
+
+  function handleCategorySelect(categoryId: string) {
+    setCategory(categoryId);
   }
 
   return (
@@ -42,7 +51,9 @@ export function AppointmentCreate() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <ScrollView>
+      <Background>
+        
+        <ScrollView>
           <Header
             title="Agendar partida"
           />
@@ -56,7 +67,7 @@ export function AppointmentCreate() {
 
           <CategorySelect
             hasCheckBox
-            setCategory={setCategory}
+            setCategory={handleCategorySelect}
             categoySelected={category}
           />
 
@@ -84,10 +95,9 @@ export function AppointmentCreate() {
               </View>
             </RectButton>
 
-
             <View style={styles.field}>
               <View>
-                <Text style={styles.label}>
+                <Text style={[styles.label, { marginBottom: 12 }]}>
                   Dia e mês
                 </Text>
                 <View style={styles.column}>
@@ -100,7 +110,7 @@ export function AppointmentCreate() {
               </View>
 
               <View>
-                <Text style={styles.label}>
+                <Text style={[styles.label, { marginBottom: 12 }]}>
                   Hora e minuto
                 </Text>
                 <View style={styles.column}>
@@ -135,9 +145,10 @@ export function AppointmentCreate() {
             </View>
 
           </View>
-      </ScrollView>
+        </ScrollView>
+      </Background>
 
-      <ModalView visible={openGuildsModal}>
+      <ModalView visible={openGuildsModal} closeModal={handleCloseGuilds}>
         <Guilds handleGuildSelect={handleGuildSelect} />
       </ModalView>
     </KeyboardAvoidingView>
